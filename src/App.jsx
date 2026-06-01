@@ -22,8 +22,8 @@ const FALLBACK_USDZ = 'https://modelviewer.dev/shared-assets/models/Astronaut.us
 function flattenMenu(menuByCategory) {
   return Object.values(menuByCategory).flat().map((item) => ({
     ...item,
-    modelSrc: item.modelSrc || FALLBACK_GLB,
-    iosSrc:   item.iosSrc   || FALLBACK_USDZ,
+    modelSrc: item.modelSrc ? item.modelSrc.replace('http://', 'https://') : FALLBACK_GLB,
+    iosSrc:   item.iosSrc   ? item.iosSrc.replace('http://', 'https://')   : FALLBACK_USDZ,
   }))
 }
 
