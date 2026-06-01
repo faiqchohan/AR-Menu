@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+:root {
+  --theme-bg: #0a0a0a;
+  --theme-surface: #141414;
+  --theme-surface-2: #1c1c1c;
+  --theme-text: #ffffff;
+  --theme-text-rgb: 255, 255, 255;
+  --theme-text-muted: #a1a1aa;
+  --theme-font: 'Inter', sans-serif;
+  --theme-radius: 16px;
+  --theme-logo-shape: 50%;
+  --accent-color: #f59e0b;
+  --accent-color-rgb: 245, 158, 11;
+}
+
+@theme {
+  --color-bg: var(--theme-bg);
+  --color-surface: var(--theme-surface);
+  --color-surface-2: var(--theme-surface-2);
+  --color-amber: var(--accent-color);
+  --color-amber-light: var(--accent-color);
+  --color-amber-dark: var(--accent-color);
+  --color-text-primary: var(--theme-text);
+  --color-text-secondary: rgba(var(--theme-text-rgb), 0.7);
+  --color-text-muted: var(--theme-text-muted);
+  --color-divider: rgba(var(--theme-text-rgb), 0.08);
+  --font-inter: var(--theme-font);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: var(--font-inter);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  overscroll-behavior: none;
+}
+
+/* Hide scrollbar universally */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ripple animation */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(var(--accent-color-rgb, 245,158,11), 0.25);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+}
+
+/* Pill active glow */
+@keyframes pillGlow {
+  0%, 100% { box-shadow: 0 0 0px rgba(var(--accent-color-rgb, 245,158,11), 0); }
+  50% { box-shadow: 0 0 12px rgba(var(--accent-color-rgb, 245,158,11), 0.35); }
+}
+
+/* Float button pulse */
+@keyframes floatPulse {
+  0%, 100% { box-shadow: 0 8px 30px rgba(var(--accent-color-rgb, 245,158,11), 0.35); }
+  50% { box-shadow: 0 8px 40px rgba(var(--accent-color-rgb, 245,158,11), 0.55); }
+}
+
+/* Fade-in for menu items */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-item-enter {
+  animation: fadeSlideIn 0.25s ease forwards;
+}
+
+/* ── AR Viewer overlay ──────────────────────────────────── */
+
+/* Slide-up / slide-down transition for the AR overlay */
+.ar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: var(--theme-bg);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  max-width: 480px;
+  left: 50%;
+  translate: -50% 0;
+  width: 100%;
+}
+
+.ar-overlay.ar-overlay--open {
+  transform: translateY(0%);
+}
+
+/* Backdrop that dims the rest of the screen on desktop */
+.ar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+.ar-backdrop.ar-backdrop--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* model-viewer fills its container */
+model-viewer {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  --poster-color: transparent;
+}
+
+/* AR slot button — reset browser defaults so our React styles apply */
+model-viewer > [slot="ar-button"] {
+  all: unset;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Hint flash animation on the floating button */
+@keyframes hintFlash {
+  0%, 100% { filter: brightness(1); }
+  25%       { filter: brightness(1.4); }
+  50%       { filter: brightness(1); }
+  75%       { filter: brightness(1.4); }
+}
+.hint-flash {
+  animation: hintFlash 0.6s ease forwards;
+}
+
+/* Quick fade for menu list */
+@keyframes quickFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.menu-list-enter {
+  animation: quickFade 0.15s ease-out forwards;
+}
+
+/* Slow pulse for floating button */
+@keyframes slowPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+.floating-pulse {
+  animation: slowPulse 2s ease-in-out infinite;
+}
+
+/* ── AR Launch Screen animations ─────────────────────────── */
+
+/* Concentric ring breathe */
+@keyframes surfacePulse {
+  0%, 100% { transform: scale(0.93); opacity: 0.45; }
+  50%       { transform: scale(1.07); opacity: 1;    }
+}
+
+/* Rotating scan-line sweep */
+@keyframes scanRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Soft blink for the center dot while loading */
+@keyframes centerBlink {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1;   }
+}
+
+/* Slide up instruction text */
+@keyframes instrFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.instr-enter {
+  animation: instrFadeIn 0.35s 0.1s ease forwards;
+  opacity: 0;
+}
