@@ -112,16 +112,15 @@ html, body, #root {
   background-color: var(--theme-bg);
   display: flex;
   flex-direction: column;
-  transform: translateY(100%);
+  transform: translateX(-50%) translateY(100%);
   transition: transform 0.3s ease-out;
   max-width: 480px;
   left: 50%;
-  translate: -50% 0;
   width: 100%;
 }
 
 .ar-overlay.ar-overlay--open {
-  transform: translateY(0%);
+  transform: translateX(-50%) translateY(0%);
 }
 
 /* Backdrop that dims the rest of the screen on desktop */
