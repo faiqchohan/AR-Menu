@@ -163,11 +163,13 @@ export default function ARViewer({ dish, isOpen, onClose }) {
   // 'loading' | 'ready' | 'unsupported' | 'launched'
   const [scanState,   setScanState]   = useState('loading')
   const [arLaunching, setArLaunching] = useState(false)
+  const [modelError,  setModelError]  = useState(null)
 
   // Reset when a new dish is selected
   useEffect(() => {
     setScanState('loading')
     setArLaunching(false)
+    setModelError(null)
   }, [displayDish?.id])
 
   // Body-scroll lock
@@ -204,11 +206,19 @@ export default function ARViewer({ dish, isOpen, onClose }) {
       }
     }
 
+    const onError = (e) => {
+      console.error('model-viewer error:', e)
+      setModelError('Failed to load: ' + (displayDish.modelSrc || 'unknown url'))
+      setScanState('unsupported')
+    }
+
     mv.addEventListener('load', onLoad)
     mv.addEventListener('ar-status', onArStatus)
+    mv.addEventListener('error', onError)
     return () => {
       mv.removeEventListener('load', onLoad)
       mv.removeEventListener('ar-status', onArStatus)
+      mv.removeEventListener('error', onError)
     }
   }, [displayDish?.id])
 
@@ -230,7 +240,7 @@ export default function ARViewer({ dish, isOpen, onClose }) {
   const hasModel = !!displayDish?.modelSrc
 
   // ── Derived label strings ────────────────────────────────────────────────
-  const instructionText = {
+  const instructionText = modelError ? modelError : {
     loading:     'Loading 3D model…',
     ready:       'Point your camera at a flat surface\nto place the dish on your table',
     unsupported: 'AR is not supported on this device.\nTry opening on a mobile phone.',
