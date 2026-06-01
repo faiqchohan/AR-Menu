@@ -243,6 +243,25 @@ export default function App() {
 
   useEffect(() => { loadData() }, [])
 
+  // Background preloader: Download all 3D models into the browser cache
+  // so they open instantly the moment a user taps on them.
+  useEffect(() => {
+    if (allItems.length === 0) return
+    
+    const modelsToPreload = [...new Set(allItems.map(item => item.modelSrc).filter(src => src && src !== FALLBACK_GLB))]
+
+    modelsToPreload.forEach(src => {
+      if (!document.querySelector(`link[href="${src}"]`)) {
+        const link = document.createElement('link')
+        link.rel = 'preload'
+        link.as = 'fetch'
+        link.crossOrigin = 'anonymous'
+        link.href = src
+        document.head.appendChild(link)
+      }
+    })
+  }, [allItems])
+
   const handleDishTap = (dish) => {
     console.log(dish.name)
     setSelectedDish(dish)
