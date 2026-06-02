@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../Header'
 import CategoryPills from '../CategoryPills'
+import ViewportPreloader from '../ViewportPreloader'
 
 export default function GridLayout({ restaurant, menuItems, theme, selectedDishId, onDishSelect }) {
   const categories = [...new Set(menuItems.map((i) => i.category))]
@@ -59,6 +60,7 @@ export default function GridLayout({ restaurant, menuItems, theme, selectedDishI
                 border: item.id === selectedDishId ? '2px solid var(--accent-color)' : '1px solid rgba(var(--theme-text-rgb, 255,255,255), 0.08)'
               }}
             >
+              <ViewportPreloader modelSrc={item.modelSrc} />
               <span style={{ 
                 fontFamily: 'var(--theme-font)', 
                 fontSize: '15px', 

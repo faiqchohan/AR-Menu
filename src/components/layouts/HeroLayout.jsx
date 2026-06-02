@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import CategoryPills from '../CategoryPills'
+import ViewportPreloader from '../ViewportPreloader'
 
 export default function HeroLayout({ restaurant, menuItems, theme, selectedDishId, onDishSelect }) {
   const categories = [...new Set(menuItems.map((i) => i.category))]
@@ -97,6 +98,7 @@ export default function HeroLayout({ restaurant, menuItems, theme, selectedDishI
                 backgroundColor: item.id === selectedDishId ? 'var(--theme-surface-2)' : 'transparent'
               }}
             >
+              <ViewportPreloader modelSrc={item.modelSrc} />
               <span style={{ 
                 fontFamily: 'var(--theme-font)', 
                 fontSize: '17px', 

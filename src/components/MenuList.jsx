@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import useRipple from '../hooks/useRipple'
+import ViewportPreloader from './ViewportPreloader'
 
 /**
  * Single menu item row: dish name (left) + price (right) with ripple on tap.
@@ -51,6 +52,8 @@ function MenuItem({ item, index, onTap, isSelected }) {
         handlePointerUp()
       }}
     >
+      <ViewportPreloader modelSrc={item.modelSrc} />
+      
       {/* Left: dish name */}
       <span
         style={{
