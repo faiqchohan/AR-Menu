@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import FloatingButton from './components/FloatingButton'
 import ARViewer from './components/ARViewer'
 import { fetchMenu, fetchRestaurant } from './api'
@@ -340,6 +341,9 @@ export default function App() {
           isOpen={arOpen}
           onClose={handleClose}
         />
+
+        {/* ── Vercel Analytics ── */}
+        <Analytics />
       </div>
     </div>
   )
